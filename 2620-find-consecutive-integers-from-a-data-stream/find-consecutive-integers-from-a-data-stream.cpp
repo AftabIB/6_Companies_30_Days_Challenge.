@@ -9,19 +9,10 @@ public:
     }
     
     bool consec(int num) {
-        if(num == value)
-        {
-            count++;
-        }  
-        else
-        {
-            count = 0;
-        }
-        if(count >= k)
-        {
-            return true;
-        }
-        return false;
+       if(num==value) count++;
+       else count=0;
+
+       return count>=k;
     }
 };
 
