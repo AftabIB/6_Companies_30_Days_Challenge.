@@ -1,54 +1,62 @@
 class Solution {
 public:
     int n;
-    unordered_map<int, int> memo;
+    vector<int> dp;
 
-    int BS(vector<vector<int>>& array, int target) {
-        int l = 0, r = n - 1;
-        int result = n + 1;
-        
-        while (l <= r) {
-            int mid = l + (r - l) / 2;
-            if (array[mid][0] >= target) {
+    int BS(vector<vector<int>> &array,int l,int target)
+    {
+        int r = n-1;
+
+        int result = n+1;
+        while(l <= r)
+        {
+            int mid = l + (r-l)/2;
+            if(array[mid][0] >= target)
+            {
                 result = mid;
                 r = mid - 1;
-            } else {
+            }
+            else
+            {
                 l = mid + 1;
             }
         }
         return result;
     }
 
-    int solve(vector<vector<int>>& array, int i) {
-        if (i >= n) {
+    int solve(vector<vector<int>>& array,int i)
+    {
+        if(i >= n)
+        {
             return 0;
         }
 
-        if (memo.find(i) != memo.end()) {
-            return memo[i];
+        if(dp[i] != -1)
+        {
+            return dp[i];
         }
 
-        int getNextJob = BS(array, array[i][1]);
-        int take = array[i][2] + solve(array, getNextJob);
-        int noTake = solve(array, i + 1);
+        int getNextJob = BS(array,i+1,array[i][1]);
+        int take = array[i][2] + solve(array,getNextJob);
+        int noTake = solve(array,i+1);
 
-        memo[i] = max(take, noTake);
-        return memo[i];
+        return dp[i] = max(take,noTake);
     }
 
     int jobScheduling(vector<int>& startTime, vector<int>& endTime,
                       vector<int>& profit) {
         n = startTime.size();
-        vector<vector<int>> array(n, vector<int>(3, 0));
-
+        dp.resize(n, -1);
+        vector<vector<int>> array(n,vector<int>(3, 0));
+        
         for (int i = 0; i < n; i++) {
             array[i][0] = startTime[i];
-            array[i][1] = endTime[i];
-            array[i][2] = profit[i];
+            array[i][1] = endTime[i]; 
+            array[i][2] = profit[i]; 
         }
-
+        
         sort(begin(array), end(array));
 
-        return solve(array, 0);
+        return solve(array,0);
     }
 };
