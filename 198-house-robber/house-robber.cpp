@@ -20,17 +20,32 @@ public:
     
     int rob(vector<int>& nums) {
         int n = nums.size();
-        if (n == 0) return 0;
-        vector<int> dp(n);
-        dp[0] = nums[0];
-        for(int i = 1; i < n; i++) {
+        // if (n == 0) return 0;
+        // vector<int> dp(n);
+        // dp[0] = nums[0];
+        // for(int i = 1; i < n; i++) {
+        //     int take = nums[i];
+        //     if(i > 1) {
+        //         take += dp[i - 2];
+        //     }
+        //     int noTake = dp[i - 1];
+        //     dp[i] = max(take, noTake);
+        // }
+        // return dp[n - 1];
+        int prev = nums[0];
+        int prev2 = 0;
+        for(int i=1;i<n;i++)
+        {
             int take = nums[i];
-            if(i > 1) {
-                take += dp[i - 2];
-            }
-            int noTake = dp[i - 1];
-            dp[i] = max(take, noTake);
+            if(i > 1)
+                take += prev2;
+            
+            int noTake = 0 + prev;
+
+            int curr = max(take,noTake);
+            prev2 = prev;
+            prev = curr;
         }
-        return dp[n - 1];
+        return prev;
     }
 };
