@@ -1,19 +1,16 @@
 class Solution {
 public:
     string frequencySort(string s) {
-        string ans;
-        unordered_map<char,pair<int,string>> mp;
-        for(auto it:s){
-            mp[it].first++;
-            mp[it].second.push_back(it);
+        vector<pair<int,char>> hash('z'+1,{0,0});
+        for(char c: s)
+            hash[c] = {hash[c].first+1,c};
+
+        sort(hash.begin(),hash.end());
+        string res = "";
+        for(auto st:hash)
+        {
+            res = string(st.first,st.second) + res;
         }
-        set<pair<int,string>> st;
-        for(auto it:mp){
-            st.insert({it.second.first,it.second.second});
-        }
-        for(auto it=st.rbegin();it!=st.rend();++it){
-            ans+=(it->second);
-        }
-        return ans;        
+        return res;
     }
 };
